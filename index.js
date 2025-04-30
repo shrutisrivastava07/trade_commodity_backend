@@ -1,0 +1,31 @@
+const express = require('express');
+const bodyParser = require('body-parser');
+const db = require('./models');
+const cors = require('cors');
+
+require('dotenv').config();
+
+const app = express();
+app.use(bodyParser.json());
+app.use(cors());
+app.get('/', (req, res) => {
+    res.send('Hello World');
+  });
+
+const registerRoutes = (app, routes) => {
+    routes.forEach(({ path, route }) => {
+        app.use(path, route);
+    });
+};
+
+registerRoutes(app, [
+    { path: '/api/auth', route: require('./routes/auth.routes') },
+    { path: '/api/trades', route: require('./routes/trade.routes') },
+]);
+
+const PORT =  3000;
+
+db.sequelize.sync({ force: false }).then(() => {
+  console.log('DB synced');
+  app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+});

@@ -3,8 +3,8 @@ const tradeService = require('../services/trade.service');
 
 exports.create = async (req, res) => {
   try {
-  const { commodity, quantity, action, type } = req.body;
-  const tradeData = { commodity, quantity, action, type };
+  const { commodity, quantity, action, type, tradeId } = req.body;
+  const tradeData = { commodity, quantity, action, type, tradeId };
     const trade = await tradeService.placeTrade(tradeData);
         
   res.json({

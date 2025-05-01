@@ -13,10 +13,15 @@ exports.createTrade = async (tradeData) => {
 // async function fetchExistingTrades(tradeId) {
   exports.fetchExistingTrades = async (tradeId) => {
   return db.trade.findAll({
-    where: { id: tradeId },
-    order: [['version', 'DESC']],
+    where: { tradeId: tradeId },
+    order: [['tradeVersionId', 'DESC']],
   });
 }
+exports.fetchTradeByIdAndAction = async (tradeId, action) => {
+  return db.trade.findOne({
+    where: { tradeId: tradeId, action: action },
+  });
+};
 
 exports.getLatestInsertedTrades = async () => {
   return db.trade.findAll({
@@ -56,7 +61,7 @@ exports.updateTradeStatus = async (trade, status) => {
   return trade.save();
 };
 
-exports.getAllTrades = async (page, limit, filter = {}) => {
+exports.getAllTrades = async (offset, limit, filter = {}) => {
   const whereClause = {};
   const commodityWhereClause = {};
 
@@ -70,7 +75,7 @@ exports.getAllTrades = async (page, limit, filter = {}) => {
   });
 
   const result = await db.trade.findAndCountAll({
-    page,
+    offset,
     limit,
     where: whereClause,
     logging : true,

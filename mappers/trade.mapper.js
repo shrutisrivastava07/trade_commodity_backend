@@ -3,7 +3,8 @@ const _ = require('lodash');
 
 
 exports.toModel = (entity) => {
-   
+  // console.log('Entity in toModel:', entity);
+   if (!entity) return null;
     const model = {
      transactionID: entity.transactionID,
      tradeId: entity.tradeId,
@@ -15,7 +16,9 @@ exports.toModel = (entity) => {
      
      commodityId: entity.commodity.id,
      commodityCode: entity.commodity.code,
-     commodityDescription: entity.commodity.description
+     commodityDescription: entity.commodity.description,
+     showCancel: entity.showCancel,
+     showUpdate: entity.showUpdate,
     };
 
      return model;

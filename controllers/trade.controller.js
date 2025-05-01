@@ -16,29 +16,11 @@ exports.create = async (req, res, next) => {
   } catch (err) {
     console.error('Error adding trade in API:', err.message);
     next(err);
-    // res.json({
-          
-    //   isSuccess: false,
-    //   message: err,
-    //    code: 'FAILED_WHILE_ADDING_TRADE',
-    // });
+
 };
 }
 
-// exports.updateStatus = async (req, res) => {
-//   try {
-//     const updated = await tradeService.changeTradeStatus(req.userId, req.params.tradeId, req.body.status);
-//    // res.json(updated);
-//     res.page(
-//         mapper.toSearchModel(result.rows),
-//         pageNo,
-//         pageSize,
-//         result.count
-//    );
-//   } catch (err) {
-//     res.status(404).json({ message: err.message });
-//   }
-// };
+
 
 exports.getAll = async (req, res,next) => {
   try {
@@ -62,11 +44,6 @@ exports.getAll = async (req, res,next) => {
   } catch (err) {
     console.error('Error fetching trades:', err);
     next(err)
-    // res.json({
-          
-    //   isSuccess: false,
-    //   message: err.message,
-    //    code: 'FAILED_WHILE_FETCHING_TRADE',
-    // });
+
   }
 };

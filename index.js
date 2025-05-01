@@ -20,7 +20,7 @@ const registerRoutes = (app, routes) => {
 };
 
 registerRoutes(app, [
-    { path: '/api/auth', route: require('./routes/auth.routes') },
+
     { path: '/api/trades', route: require('./routes/trade.routes') },
     { path: '/api/commodites', route: require('./routes/commodity.routes') },
 ]);

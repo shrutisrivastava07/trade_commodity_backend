@@ -1,7 +1,7 @@
 const { toWebModel } = require('../mappers/trade.mapper');
 const tradeService = require('../services/trade.service');
 
-exports.create = async (req, res) => {
+exports.create = async (req, res, next) => {
   try {
   const { commodity, quantity, action, type, tradeId } = req.body;
   const tradeData = { commodity, quantity, action, type, tradeId };
@@ -14,12 +14,14 @@ exports.create = async (req, res) => {
         code: 'TRADE_ADDED_SUCCESS',
     })
   } catch (err) {
-    res.json({
+    console.error('Error adding trade in API:', err.message);
+    next(err);
+    // res.json({
           
-      isSuccess: false,
-      message: 'Error while adding trade. Please try again.',
-       code: 'FAILED_WHILE_ADDING_TRADE',
-    });
+    //   isSuccess: false,
+    //   message: err,
+    //    code: 'FAILED_WHILE_ADDING_TRADE',
+    // });
 };
 }
 
@@ -38,7 +40,7 @@ exports.create = async (req, res) => {
 //   }
 // };
 
-exports.getAll = async (req, res) => {
+exports.getAll = async (req, res,next) => {
   try {
     console.log("Fetching trades for user:", req.userId);
     const page = parseInt(req.query.page) || 1;
@@ -58,6 +60,13 @@ exports.getAll = async (req, res) => {
       code: 'TRADE_FETCH_SUCCESS',
     });
   } catch (err) {
-    res.status(500).json({ message: err.message });
+    console.error('Error fetching trades:', err);
+    next(err)
+    // res.json({
+          
+    //   isSuccess: false,
+    //   message: err.message,
+    //    code: 'FAILED_WHILE_FETCHING_TRADE',
+    // });
   }
 };

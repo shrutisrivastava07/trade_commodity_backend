@@ -1,6 +1,6 @@
 const commodityService = require('../services/commodity.service');
 
-exports.getAll = async (req, res) => {
+exports.getAll = async (req, res, next) => {
   try {
     console.log("Fetching commodities for user:");
     const page = parseInt(req.query.page) || 1;
@@ -20,7 +20,8 @@ exports.getAll = async (req, res) => {
             code: 'COMMODITY_FETCH_SUCCESSFUL',
             });
   } catch (err) {
-    res.status(500).json({ message: err.message });
-    //res.failure(err);
+    next(err)
+    // res.status(500).json({ message: err.message });
+    // //res.failure(err);
   }
 };

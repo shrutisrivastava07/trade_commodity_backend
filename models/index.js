@@ -11,11 +11,11 @@ const db = {};
 db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 
-db.Counterparty = require('./counterparty.model')(sequelize, DataTypes);
-db.Trade = require('./trade.model')(sequelize, DataTypes);
+db.commodity = require('./commodity.model')(sequelize, DataTypes);
+db.trade = require('./trade.model')(sequelize, DataTypes);
 
-// Relations
-db.Counterparty.hasMany(db.Trade);
-db.Trade.belongsTo(db.Counterparty);
+// Relations one-to-many
+db.commodity.hasMany(db.trade);
+db.trade.belongsTo(db.commodity);
 
 module.exports = db;

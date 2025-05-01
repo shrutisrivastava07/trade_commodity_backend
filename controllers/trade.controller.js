@@ -1,45 +1,63 @@
+const { toWebModel } = require('../mappers/trade.mapper');
 const tradeService = require('../services/trade.service');
 
-exports.addTrade = async (req, res) => {
+exports.create = async (req, res) => {
   try {
-    const trade = await tradeService.placeTrade(req.userId, req.body);
-    res.status(201).json(trade);
+  const { commodity, quantity, action, type } = req.body;
+  const tradeData = { commodity, quantity, action, type };
+    const trade = await tradeService.placeTrade(tradeData);
+        
+  res.json({
+          
+        isSuccess: true,
+        message: 'Trades added successfully',
+        code: 'TRADE_ADDED_SUCCESS',
+    })
   } catch (err) {
-    res.status(400).json({ message: err.message });
-  }
+    res.json({
+          
+      isSuccess: false,
+      message: 'Error while adding trade. Please try again.',
+       code: 'FAILED_WHILE_ADDING_TRADE',
+    });
 };
+}
 
-exports.updateStatus = async (req, res) => {
-  try {
-    const updated = await tradeService.changeTradeStatus(req.userId, req.params.tradeId, req.body.status);
-   // res.json(updated);
-    res.page(
-        mapper.toSearchModel(result.rows),
-        pageNo,
-        pageSize,
-        result.count
-   );
-  } catch (err) {
-    res.status(404).json({ message: err.message });
-  }
-};
+// exports.updateStatus = async (req, res) => {
+//   try {
+//     const updated = await tradeService.changeTradeStatus(req.userId, req.params.tradeId, req.body.status);
+//    // res.json(updated);
+//     res.page(
+//         mapper.toSearchModel(result.rows),
+//         pageNo,
+//         pageSize,
+//         result.count
+//    );
+//   } catch (err) {
+//     res.status(404).json({ message: err.message });
+//   }
+// };
 
-exports.getAllTrades = async (req, res) => {
+exports.getAll = async (req, res) => {
   try {
     console.log("Fetching trades for user:", req.userId);
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 10;
-    const items = await tradeService.fetchTrades( page, limit);
-//     res.page(
-//         data,
-//         data.totalPages,
-//         limit,
-//         data.totalItems
-//    );
-    
-    res.json(items);
+    const filter = req.query.filter || {}; // Add filter from request query
+
+    const result = await tradeService.fetchTrades(page, limit, filter);
+
+
+    return res.json({
+      totalRecords: result.count || 1,
+      totalPage: Math.ceil(result.count / limit),
+      pageNo: page,
+      items:  toWebModel(result.rows),
+      isSuccess: true,
+      message: 'Trades fetched successfully',
+      code: 'TRADE_FETCH_SUCCESS',
+    });
   } catch (err) {
     res.status(500).json({ message: err.message });
-    //res.failure(err);
   }
 };

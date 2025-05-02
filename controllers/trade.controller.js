@@ -1,11 +1,34 @@
 const { toWebModel } = require('../mappers/trade.mapper');
 const tradeService = require('../services/trade.service');
+// services/trade.service.js
+const {
+  createTrade,
+  fetchExistingTrades,
+
+} = require('../dal/trade.dal');
+const commodityService = require('../services/commodity.service');
+const tradeUtils = require('../utils/trade.utils');
+
+const db = require('../models');
+const { lockCommodityForUpdate, lockTradeForUpdate } = require('../utils/lock.utils');
+
 
 exports.create = async (req, res, next) => {
   try {
   const { commodity, quantity, action, type, tradeId } = req.body;
   const tradeData = { commodity, quantity, action, type, tradeId };
-    const trade = await tradeService.placeTrade(tradeData);
+  console.log('Trade Data: before creating' , tradeData);
+    const trade = await tradeService.placeTrade(tradeData,{
+      db,
+      tradeUtils,
+      fetchExistingTrades,
+      lockCommodityForUpdate,
+      lockTradeForUpdate,
+      createTrade,
+      commodityService,
+    }
+
+    );
         
   res.json({
           

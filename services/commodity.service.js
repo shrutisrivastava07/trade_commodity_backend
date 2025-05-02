@@ -14,12 +14,13 @@ const getById = async (id) => {
     return await commodityDAL.getCommodityById(id);
 };
 
-const update = async (id, data) => {
+const update = async (id, data, options={}) => {
     console.log('Updating commodity with ID:', id, 'and data:', data);
     const commodityRow = await commodityDAL.getCommodityById(id);
     commodityRow.quantity = data.quantity;
+    await commodityDAL.updateCommodity(commodityRow,options);
     console.log('Found commodity to update:', commodityRow);
-    commodityRow.save();
+  //  commodityRow.save();
    // await commodityDAL.updateCommodity(commodityRow);
 };
 

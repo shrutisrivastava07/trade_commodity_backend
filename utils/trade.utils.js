@@ -80,6 +80,7 @@ function prepareCommodityData(commodity, updatedQuantity) {
         const lastInserted = await fetchTradeByIdAndAction(tradeData.tradeId, 'INSERT');
         const prevQty = lastInserted.type === 'BUY' ? lastInserted.quantity : -lastInserted.quantity;
         const currQty = tradeData.type === 'BUY' ? tradeData.quantity : -tradeData.quantity;
+        console.log('prevQty:', prevQty, 'currQty:', currQty, 'commodity.quantity:', commodity.quantity);
         return commodity.quantity + currQty - prevQty;
       }
   

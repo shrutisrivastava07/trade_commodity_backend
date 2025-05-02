@@ -26,9 +26,9 @@ exports.getAllCommodities = async (page, limit) => {
 //     return await commodity.update(data);
 // };
 
-exports.updateCommodity = async (commodity) => {
-    console.log('Inside Updating commodity with ID:', id, 'and data:', data);
-     commodity.save();
+exports.updateCommodity = async (commodity, options={}) => {
+    console.log('Inside Updating commodity with ID:', commodity.id, 'and data:', commodity);
+    await commodity.save({ transaction: options.transaction });
      console.log(' Updated  commodity with ID:', commodity);
 
      return commodity;

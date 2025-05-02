@@ -1,9 +1,9 @@
 const db = require('../models');
 
-exports.createTrade = async (tradeData) => {
+exports.createTrade = async (tradeData, options = {}) => {
   console.log('Trade Data before insert', tradeData);
 
-  const data = await  db.trade.create(tradeData);
+  const data = await  db.trade.create(tradeData,{ transaction: options.transaction});
   console.log('Trade Data after insert', data);
   return data;
 };
@@ -38,7 +38,7 @@ exports.getLatestInsertedTrades = async () => {
         attributes: ['id', 'code', 'name'],
       }
     ],
-    group: ['trade.id', 'commodity.id'],
+    group: ['trade.tradeId', 'commodity.id'],
     order: [[db.Sequelize.fn('MAX', db.Sequelize.col('tradeId')), 'DESC']],
   });
 };
